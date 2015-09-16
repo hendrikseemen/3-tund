@@ -13,6 +13,11 @@
 	$create_password_error = "";
 	$create_email_error = "";
 	
+	//muutujad andmebaasi väärtuste jaoks
+	
+	$name = "";
+	$email = "";
+	
 	//kontrollime, et keegi vajutas input nuppu
 	if($_SERVER["REQUEST_METHOD"] == "POST") {
 		
@@ -20,11 +25,14 @@
 		
 		
 		if (isset($_POST["login"])) {
-			
+			echo "vajutas logi sisse";
 			//kontrollin, et e-post ei ole tühi
 			if (empty($_POST["email"])) {
 				$email_error = "See väli on kohustuslik";
 				
+			}else{
+				
+				$email = test_input($_POST["email"]);
 			}
 				
 			//kontrollin, et parool ei ole tühi
@@ -42,8 +50,9 @@
 				
 			}
 		}
-		else //registration field errors
+		elseif (isset($_POST["create"])) //registration field errors
 		{
+			echo "vajutas sisesta";
 			if (empty($_POST["username"])) {
 				$name_error = "See väli on kohustuslik";
 				
@@ -60,6 +69,10 @@
 				$create_password_error = "See väli on kohustuslik";
 			} else {
 				
+				//kõik korras
+				//test_input eemaldab pahatahtlikud osad
+				$name = test_input($_POST["name"]);
+				
 				
 				if(strlen($_POST["create_password"]) <8) {
 					
@@ -68,10 +81,23 @@
 				}
 				
 			}
+			
+			if ($name_error == ""){
+				echo "salvestasin ab'i";
+			}
 		}
+		
 	}	
 	
-		
+	function test_input($data) {
+		// võtab ära tühikud, enterid, tabid
+		$data = trim($data);
+		//tagurpidi kaldkriipsud
+		$data = stripslashes($data);
+		//teeb html'i teksti
+		$data = htmlspecialchars($data);
+		return $data;
+	}
 	
 ?>
 <html>
@@ -84,7 +110,7 @@
 	<h2>Logi sisse</h2>
 	
 	<form action="login.php" method="post">
-		<input name="email" type="email" placeholder="E-post"> <?php echo $email_error; ?> <br><br>
+		<input name="email" type="email" placeholder="E-post" value=" <?php echo $email; ?>"> <?php echo $email_error; ?> <br><br>
 		<input name="password" type="password" placeholder="Parool"> <?php echo $password_error; ?> <br><br>
 		<input type="submit" name="login" value="Logi sisse">
 	</form>	
@@ -96,7 +122,7 @@
 		<input name="username" type="name" placeholder="Kasutajanimi"> <?php echo $name_error; ?> <br><br>
 		<input name="create_email" type="email" placeholder="E-post"> <?php echo $create_email_error; ?> <br><br>
 		<input name="create_password" type="password" placeholder="Parool"> <?php echo $create_password_error; ?> <br><br>
-		<input type="submit" value="Sisesta">
+		<input name="create" type="submit" value="Sisesta">
 	</form>	
 	
 	</FONT>

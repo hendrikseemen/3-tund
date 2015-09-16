@@ -1,5 +1,5 @@
 <?php
-	
+	require_once("../header.php");
 	// LOGIN.PHP
 	
 	$name_error = "";
@@ -99,3 +99,4 @@
 </body>
 
 </html>
+<?php require_once("../footer.php"); ?>

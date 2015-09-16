@@ -8,7 +8,7 @@
 
 <?php
 
-	//tõstame teise faili sisu siia
+	//tÃµstame teise faili sisu siia
 	require_once("menu.php");
 	
 ?>
